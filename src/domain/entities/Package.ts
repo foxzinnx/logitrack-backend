@@ -1,3 +1,4 @@
+import type { Address } from '../value-objects/Address.js';
 import { UUID } from '../value-objects/UUID.js'
 
 export enum PackageStatus{
@@ -14,7 +15,7 @@ export class Package{
         private readonly id: UUID,
         private recipientName: string,
         private recipientPhone: string,
-        private deliveryAddress: string,
+        private deliveryAddress: Address,
         private status: PackageStatus,
         private readonly createdAt: Date,
         private updatedAt: Date,
@@ -23,7 +24,7 @@ export class Package{
         private deliveryAt?: Date,
     ){}
 
-    static create(recipientName: string, recipientPhone: string, deliveryAddress: string): Package {
+    static create(recipientName: string, recipientPhone: string, deliveryAddress: Address): Package {
         return new Package(
             UUID.generate(),
             recipientName,
@@ -92,7 +93,7 @@ export class Package{
         return this.recipientName;
     }
 
-    getDeliveryAddress(): string {
+    getDeliveryAddress(): Address {
         return this.deliveryAddress;
     }
 
