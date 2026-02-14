@@ -19,9 +19,9 @@ export class Package{
         private status: PackageStatus,
         private readonly createdAt: Date,
         private updatedAt: Date,
-        private delivererId?: UUID,
-        private deliveryPhotoUrl?: string,
-        private deliveryAt?: Date,
+        private delivererId: UUID | null,
+        private deliveryPhotoUrl: string | null,
+        private deliveryAt: Date | null,
     ){}
 
     static create(recipientName: string, recipientPhone: string, deliveryAddress: Address): Package {
@@ -33,9 +33,35 @@ export class Package{
             PackageStatus.PENDING,
             new Date(),
             new Date(),
-            undefined,
-            undefined,
-            undefined
+            null,
+            null,
+            null
+        )
+    }
+
+    static restore(
+        id: UUID,
+        recipientName: string,
+        recipientPhone: string,
+        deliveryAddress: Address,
+        status: PackageStatus,
+        delivererId: UUID | null,
+        deliveryPhotoUrl: string | null,
+        deliveredAt: Date | null,
+        createdAt: Date,
+        updatedAt: Date
+    ){
+        return new Package(
+            id,
+            recipientName,
+            recipientPhone,
+            deliveryAddress,
+            status,
+            createdAt,
+            updatedAt,
+            delivererId,
+            deliveryPhotoUrl,
+            deliveredAt
         )
     }
 
@@ -81,11 +107,11 @@ export class Package{
         return this.status;
     }
 
-    getDelivererId(): UUID | undefined {
+    getDelivererId(): UUID | null {
         return this.delivererId;
     }
 
-    getDeliveryPhotoUrl(): string | undefined {
+    getDeliveryPhotoUrl(): string | null {
         return this.deliveryPhotoUrl;
     }
 
@@ -97,7 +123,15 @@ export class Package{
         return this.deliveryAddress;
     }
 
-    getDeliveredAt(): Date | undefined {
+    getDeliveredAt(): Date | null {
         return this.deliveryAt;
+    }
+
+    getCreatedAt(): Date {
+        return this.createdAt;
+    }
+
+    getUpdatedAt(): Date {
+        return this.updatedAt;
     }
 }
