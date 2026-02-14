@@ -1,10 +1,11 @@
+import type { Email } from "../value-objects/Email.js";
 import { UUID } from "../value-objects/UUID.js";
 
 export class Admin{
     private constructor(
         private readonly id: UUID,
         private name: string,
-        private email: string,
+        private email: Email,
         private passwordHash: string,
         private isActive: boolean,
         private readonly createdAt: Date,
@@ -13,7 +14,7 @@ export class Admin{
 
     static create(
         name: string,
-        email: string,
+        email: Email,
         passwordHash: string
     ): Admin {
         return new Admin(
@@ -25,6 +26,26 @@ export class Admin{
             new Date(),
             new Date()
         );
+    }
+
+    static restore(
+        id: UUID,
+        name: string,
+        email: Email,
+        passwordHash: string,
+        isActive: boolean,
+        createdAt: Date,
+        updatedAt: Date
+    ): Admin {
+        return new Admin(
+            id,
+            name,
+            email,
+            passwordHash,
+            isActive,
+            createdAt,
+            updatedAt
+        )
     }
 
     changePassword(newPasswordHash: string): void {
@@ -45,7 +66,7 @@ export class Admin{
         return this.name;
     }
 
-    getEmail(): string {
+    getEmail(): Email {
         return this.email;
     }
 
@@ -55,5 +76,13 @@ export class Admin{
 
     getIsActive(): boolean {
         return this.isActive;
+    }
+
+    getCreatedAt(): Date {
+        return this.createdAt;
+    }
+
+    getUpdatedAt(): Date {
+        return this.updatedAt;
     }
 }
