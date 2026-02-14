@@ -1,6 +1,6 @@
 import type { IDelivererRepository } from "@/domain/repositories/IDelivererRepository.js";
 import type { IPackageRepository } from "@/domain/repositories/IPackageRepository.js";
-import type { PackageResponseDTO } from "../dtos/PackageResponseDTO.js";
+import type { PackageResponseDTO } from "../../dtos/PackageResponseDTO.js";
 import { UUID } from "@/domain/value-objects/UUID.js";
 import type { Package } from "@/domain/entities/Package.js";
 

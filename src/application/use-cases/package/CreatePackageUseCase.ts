@@ -1,6 +1,6 @@
 import type { IPackageRepository } from "@/domain/repositories/IPackageRepository.js";
-import type { CreatePackageDTO } from "../dtos/CreatePackageDTO.js";
-import type { PackageResponseDTO } from "../dtos/PackageResponseDTO.js";
+import type { CreatePackageDTO } from "../../dtos/CreatePackageDTO.js";
+import type { PackageResponseDTO } from "../../dtos/PackageResponseDTO.js";
 import { Address } from "@/domain/value-objects/Address.js";
 import { Package } from "@/domain/entities/Package.js";
 
