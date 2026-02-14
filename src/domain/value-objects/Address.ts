@@ -46,6 +46,14 @@ export class Address{
         return this.city
     }
 
+    getComplement(): string | null{
+        return this.complement;
+    }
+
+    getNeighborhood(): string{
+        return this.neighborhood;
+    }
+
     getState(): string{
         return this.state;
     }

@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Package {
+  id               String    @id
+  recipientName    String
+  recipientPhone   String
+  street           String
+  number           String
+  complement       String?
+  neighborhood     String
+  city             String
+  state            String
+  zipCode          String
+  status           String
+  delivererId      String?
+  deliveryPhotoUrl String?
+  deliveredAt      DateTime?
+  createdAt        DateTime
+  updatedAt        DateTime
+
+  deliverer      Deliverer?      @relation(fields: [delivererId], references: [id])
+  deliveryEvents DeliveryEvent[]
+
+  @@map("packages")
+}
+
+model Deliverer {
+  id        String   @id
+  name      String
+  cpf       String   @unique
+  phone     String
+  isActive  Boolean
+  createdAt DateTime
+  updatedAt DateTime
+
+  packages Package[]
+
+  @@map("deliverers")
+}
+
+model Admin {
+  id           String   @id
+  name         String
+  email        String   @unique
+  passwordHash String
+  isActive     Boolean
+  createdAt    DateTime
+  updatedAt    DateTime
+
+  @@map("admins")
+}
+
+model DeliveryEvent {
+  id          String   @id
+  packageId   String
+  eventType   String
+  description String
+  userId      String?
+  createdAt   DateTime
+
+  package Package @relation(fields: [packageId], references: [id])
+
+  @@map("delivery_events")
+}

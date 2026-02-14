@@ -119,6 +119,10 @@ export class Package{
         return this.recipientName;
     }
 
+    getRecipientPhone(): string {
+        return this.recipientPhone;
+    }
+
     getDeliveryAddress(): Address {
         return this.deliveryAddress;
     }
