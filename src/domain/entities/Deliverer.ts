@@ -28,6 +28,26 @@ export class Deliverer{
         );
     }
 
+    static restore(
+        id: UUID,
+        name: string,
+        cpf: CPF,
+        phone: string,
+        isActive: boolean,
+        createdAt: Date,
+        updatedAt: Date
+    ): Deliverer{
+        return new Deliverer(
+            id,
+            name,
+            cpf,
+            phone,
+            isActive,
+            createdAt,
+            updatedAt
+        )
+    }
+
     activate(): void{
         this.isActive = true;
         this.updatedAt = new Date()
@@ -61,5 +81,13 @@ export class Deliverer{
 
     getIsActive(): boolean {
         return this.isActive;
+    }
+
+    getCreatedAt(): Date {
+        return this.createdAt;
+    }
+
+    getUpdatedAt(): Date {
+        return this.updatedAt;
     }
 }
