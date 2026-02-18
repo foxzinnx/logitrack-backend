@@ -1,3 +1,4 @@
+import { DeliveryPhotoRequiredError, PackageAlreadyAssignedError, PackageCannotBeAssignedError, PackageNotAssigned } from '../errors/PackageErrors.js';
 import type { Address } from '../value-objects/Address.js';
 import { UUID } from '../value-objects/UUID.js'
 
@@ -66,8 +67,12 @@ export class Package{
     }
 
     assignToDeliverer(delivererId: UUID): void{
+        if(this.delivererId !== null){
+            throw new PackageAlreadyAssignedError();
+        }
+
         if(this.status !== PackageStatus.PENDING && this.status !== PackageStatus.AWAITING_PICKUP){
-            throw new Error('Package cannot be assigned in current status');
+            throw new PackageCannotBeAssignedError();
         }
 
         this.delivererId = delivererId;
@@ -77,15 +82,15 @@ export class Package{
 
     markAsDelivered(photoUrl: string): void{
         if(!this.delivererId){
-            throw new Error('Package must be assigned to a deliverer');
+            throw new PackageNotAssigned()
         }
 
         if(!photoUrl || photoUrl.trim() === ''){
-            throw new Error('Delivery photo is required');
+            throw new DeliveryPhotoRequiredError();
         }
 
         if(this.status !== PackageStatus.PICKED_UP && this.status !== PackageStatus.IN_TRANSIT){
-            throw new Error('Package cannot be delivered in current status');
+            throw new PackageCannotBeAssignedError(this.status);
         }
 
         this.deliveryPhotoUrl = photoUrl;

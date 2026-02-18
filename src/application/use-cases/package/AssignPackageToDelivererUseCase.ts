@@ -3,6 +3,8 @@ import type { IPackageRepository } from "@/domain/repositories/IPackageRepositor
 import type { PackageResponseDTO } from "../../dtos/PackageResponseDTO.js";
 import { UUID } from "@/domain/value-objects/UUID.js";
 import type { Package } from "@/domain/entities/Package.js";
+import { PackageNotFoundError } from "@/domain/errors/PackageErrors.js";
+import { DelivererNotActiveError, DelivererNotFoundError } from "@/domain/errors/DelivererErrors.js";
 
 interface AssignPackageDTO {
     packageId: string;
@@ -21,16 +23,16 @@ export class AssignPackageToDelivererUseCase{
 
         const pkg = await this.packageRepository.findById(packageId);
         if(!pkg){
-            throw new Error("Package not found")
+            throw new PackageNotFoundError()
         }
 
         const deliverer = await this.delivererRepository.findById(delivererId);
         if(!deliverer){
-            throw new Error('Deliverer not found')
+            throw new DelivererNotFoundError()
         }
 
         if(!deliverer.getIsActive()){
-            throw new Error('Deliverer is not active');
+            throw new DelivererNotActiveError()
         }
 
         pkg.assignToDeliverer(delivererId);

@@ -13,8 +13,8 @@ export class PackageAlreadyAssignedError extends DomainError {
 }
 
 export class PackageCannotBeAssignedError extends DomainError {
-    constructor(currentStatus: string){
-        super(`Package cannot be assigned in current status: ${currentStatus}`);
+    constructor(currentStatus?: string){
+        super(currentStatus ? `Package cannot be assigned in current status: ${currentStatus}` : 'Package cannot be assigned in current status');
     }
 }
 
