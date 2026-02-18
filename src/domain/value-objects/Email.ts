@@ -1,3 +1,5 @@
+import { InvalidEmailError } from "../errors/ValueObjectsErrors.js";
+
 export class Email{
     private readonly value: string;
 
@@ -5,7 +7,7 @@ export class Email{
         const cleanedEmail = value.trim().toLowerCase();
 
         if(!this.isValid(cleanedEmail)){
-            throw new Error('Invalid email address');
+            throw new InvalidEmailError()
         }
 
         this.value = cleanedEmail;
