@@ -1,10 +1,12 @@
+import { InvalidCPFError } from "../errors/ValueObjectsErrors.js";
+
 export class CPF{
     private readonly value: string;
 
     constructor(value: string){
         const cleanedCPF = this.clean(value);
 
-        if(!this.isValid(cleanedCPF)) throw new Error('Invalid CPF');
+        if(!this.isValid(cleanedCPF)) throw new InvalidCPFError();
 
         this.value = cleanedCPF;
     }
