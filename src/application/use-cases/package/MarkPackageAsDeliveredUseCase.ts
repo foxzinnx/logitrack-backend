@@ -1,5 +1,6 @@
 import type { PackageResponseDTO } from "@/application/dtos/PackageResponseDTO.js";
 import type { Package } from "@/domain/entities/Package.js";
+import { PackageNotFoundError } from "@/domain/errors/PackageErrors.js";
 import type { IPackageRepository } from "@/domain/repositories/IPackageRepository.js";
 import { UUID } from "@/domain/value-objects/UUID.js";
 
@@ -18,7 +19,7 @@ export class MarkPackageAsDeliveredUseCase {
 
         const pkg = await this.packageRepository.findById(packageId);
         if(!pkg){
-            throw new Error('Package not found')
+            throw new PackageNotFoundError();
         }
 
         pkg.markAsDelivered(input.photoUrl);
