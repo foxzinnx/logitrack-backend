@@ -1,4 +1,4 @@
-import { DeliveryPhotoRequiredError, PackageAlreadyAssignedError, PackageCannotBeAssignedError, PackageNotAssigned } from '../errors/PackageErrors.js';
+import { DeliveryPhotoRequiredError, PackageAlreadyAssignedError, PackageCannotBeAssignedError, PackageNotAssignedError } from '../errors/PackageErrors.js';
 import type { Address } from '../value-objects/Address.js';
 import { UUID } from '../value-objects/UUID.js'
 
@@ -82,7 +82,7 @@ export class Package{
 
     markAsDelivered(photoUrl: string): void{
         if(!this.delivererId){
-            throw new PackageNotAssigned()
+            throw new PackageNotAssignedError()
         }
 
         if(!photoUrl || photoUrl.trim() === ''){

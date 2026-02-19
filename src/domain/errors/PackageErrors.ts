@@ -30,7 +30,7 @@ export class DeliveryPhotoRequiredError extends DomainError{
     }
 }
 
-export class PackageNotAssigned extends DomainError{
+export class PackageNotAssignedError extends DomainError{
     constructor(){
         super('Package must be assigned to a deliverer before delivery');
     }
