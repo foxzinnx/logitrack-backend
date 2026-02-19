@@ -1,4 +1,5 @@
 import { Deliverer } from "@/domain/entities/Deliverer.js";
+import { DelivererAlreadyExistsError } from "@/domain/errors/DelivererErrors.js";
 import type { IDelivererRepository } from "@/domain/repositories/IDelivererRepository.js";
 import { CPF } from "@/domain/value-objects/CPF.js";
 
@@ -26,7 +27,7 @@ export class CreateDelivererUseCase{
         const existingDeliverer = await this.delivererRepository.findByCPF(cpf);
 
         if(existingDeliverer){
-            throw new Error('Deliverer with this CPF already exists');
+            throw new DelivererAlreadyExistsError(cpf.toString());
         }
 
         const deliverer = Deliverer.create(
