@@ -8,7 +8,7 @@ export class DelivererFactory {
         cpf: string;
         phone: string;
     }>): Deliverer {
-        const validCPF = overrides?.cpf || '123.252.562-22';
+        const validCPF = overrides?.cpf || '307.677.020-93';
 
         return Deliverer.create(
             overrides?.name || faker.person.fullName(),
