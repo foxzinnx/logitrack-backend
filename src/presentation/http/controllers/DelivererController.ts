@@ -2,7 +2,7 @@ import type { CreateDelivererUseCase } from "@/application/use-cases/deliverer/C
 import type { ListActiveDeliveresUseCase } from "@/application/use-cases/deliverer/ListActiveDeliveresUseCase.js";
 import type { FastifyReply, FastifyRequest } from "fastify";
 
-interface CreateDelivererBody{
+export interface CreateDelivererBody{
     name: string;
     cpf: string;
     phone: string;
