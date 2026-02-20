@@ -13,6 +13,7 @@ export function ErrorHandler(error: FastifyError, request: FastifyRequest, reply
             error instanceof InvalidUUIDError ||
             error instanceof DeliveryPhotoRequiredError ||
             error instanceof PackageCannotBeAssignedError ||
+            error instanceof PackageCannotBeDeliveredError ||
             error instanceof PackageAlreadyAssignedError ||
             error instanceof PackageNotAssignedError
         ) {
@@ -31,7 +32,8 @@ export function ErrorHandler(error: FastifyError, request: FastifyRequest, reply
 
         if(
             error instanceof DelivererNotActiveError ||
-            error instanceof AdminNotActiveError
+            error instanceof AdminNotActiveError ||
+            error instanceof PackageNotFoundError
         ){
             return reply.status(404).send({
                 error: error.name,
