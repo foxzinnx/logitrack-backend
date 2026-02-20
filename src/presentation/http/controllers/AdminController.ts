@@ -2,13 +2,13 @@ import type { AuthenticateAdminUseCase } from "@/application/use-cases/admin/Aut
 import type { CreateAdminUseCase } from "@/application/use-cases/admin/CreateAdminUseCase.js";
 import type { FastifyReply, FastifyRequest } from "fastify";
 
-interface CreateAdminBody{
+export interface CreateAdminBody{
     name: string;
     email: string;
     password: string;
 }
 
-interface AuthenticateBody{
+export interface AuthenticateBody{
     email: string;
     password: string;
 }
