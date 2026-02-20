@@ -4,7 +4,7 @@ import { CPF } from "@/domain/value-objects/CPF.js";
 import { UUID } from "@/domain/value-objects/UUID.js";
 import type { PrismaClient } from "@/generated/prisma/client.js";
 
-export class PrismDelivererRepository implements IDelivererRepository {
+export class PrismaDelivererRepository implements IDelivererRepository {
     constructor(private prisma: PrismaClient){}
     
     async create(deliverer: Deliverer): Promise<void> {
