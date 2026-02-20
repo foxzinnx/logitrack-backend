@@ -5,7 +5,7 @@ import type { ListPackagesByDelivererUseCase } from "@/application/use-cases/pac
 import type { MarkPackageAsDeliveredUseCase } from "@/application/use-cases/package/MarkPackageAsDeliveredUseCase.js";
 import type { FastifyReply, FastifyRequest } from "fastify";
 
-interface CreatePackageBody{
+export interface CreatePackageBody{
     recipientName: string;
     recipientPhone: string;
     street: string;
@@ -17,11 +17,11 @@ interface CreatePackageBody{
     zipCode: string;
 }
 
-interface AssignPackageBody{
+export interface AssignPackageBody{
     delivererId: string;
 }
 
-interface MarkAsDeliveredBody {
+export interface MarkAsDeliveredBody {
     photoUrl: string;
 }
 
