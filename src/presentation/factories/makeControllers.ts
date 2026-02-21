@@ -14,11 +14,17 @@ import { PrismaPackageRepository } from "@/infra/database/repositories/PrismaPac
 import { PackageController } from "../http/controllers/PackageController.js";
 import { DelivererController } from "../http/controllers/DelivererController.js";
 import { AdminController } from "../http/controllers/AdminController.js";
+import { JWTTokenProvider } from "@/infra/providers/JWTTokenProvider.js";
 
 export function makeControllers(prisma: PrismaClient){
     const packageRepository = new PrismaPackageRepository(prisma);
     const delivererRepository = new PrismaDelivererRepository(prisma);
     const adminRepository = new PrismaAdminRepository(prisma);
+
+    const tokenProvider = new JWTTokenProvider(
+        process.env.JWT_SECRET || 'YmFzZS02NC1zZWNyZXQtand0',
+        '7d'
+    )
 
     const createPackageUseCase = new CreatePackageUseCase(packageRepository);
     const assignPackageToDelivererUseCase = new AssignPackageToDelivererUseCase(packageRepository, delivererRepository);
@@ -30,7 +36,7 @@ export function makeControllers(prisma: PrismaClient){
     const listActiveDeliverers = new ListActiveDeliveresUseCase(delivererRepository);
 
     const createAdminUseCase = new CreateAdminUseCase(adminRepository);
-    const authenticateAdminUseCase = new AuthenticateAdminUseCase(adminRepository);
+    const authenticateAdminUseCase = new AuthenticateAdminUseCase(adminRepository, tokenProvider);
 
     const packageController = new PackageController(
         createPackageUseCase,

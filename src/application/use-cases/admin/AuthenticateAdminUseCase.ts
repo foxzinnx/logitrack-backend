@@ -1,3 +1,5 @@
+import type { ITokenProvider } from "@/application/providers/ITokenProvider.js";
+import { AdminNotActiveError, InvalidCredentialsError } from "@/domain/errors/AdminErrors.js";
 import type { IAdminRepository } from "@/domain/repositories/IAdminRepository.js";
 import { Email } from "@/domain/value-objects/Email.js";
 import { compare } from "bcrypt";
@@ -8,25 +10,28 @@ interface AuthenticateAdminDTO {
 }
 
 interface AuthResponseDTO{
-    id: string;
-    name: string;
-    email: string;
+    admin: {
+        id: string;
+        name: string;
+        email: string;
+    };
+    token: string;
 }
 
 
 export class AuthenticateAdminUseCase{
-    constructor(private adminRepository: IAdminRepository){}
+    constructor(private adminRepository: IAdminRepository, private tokenProvider: ITokenProvider){}
 
     async execute(input: AuthenticateAdminDTO): Promise<AuthResponseDTO> {
         const email = Email.create(input.email);
 
         const admin = await this.adminRepository.findByEmail(email);
         if(!admin){
-            throw new Error('Invalid credentials');
+            throw new InvalidCredentialsError()
         }
 
         if(!admin.getIsActive()){
-            throw new Error('Admin account is inactive');
+            throw new AdminNotActiveError()
         }
 
         const isPasswordValid = await compare(
@@ -35,13 +40,22 @@ export class AuthenticateAdminUseCase{
         );
 
         if(!isPasswordValid){
-            throw new Error('Invalid credentials');
+            throw new InvalidCredentialsError()
         }
 
-        return {
-            id: admin.getId().getValue(),
-            name: admin.getName(),
+        const token = this.tokenProvider.generate({
+            userId: admin.getId().getValue(),
+            role: 'admin',
             email: admin.getEmail().getValue()
+        })
+
+        return {
+            admin: {
+                id: admin.getId().getValue(),
+                name: admin.getName(),
+                email: admin.getEmail().getValue()
+            },
+            token
         }
     }
 }

@@ -1,5 +1,6 @@
 import type { AuthenticateAdminUseCase } from "@/application/use-cases/admin/AuthenticateAdminUseCase.js";
 import type { CreateAdminUseCase } from "@/application/use-cases/admin/CreateAdminUseCase.js";
+import jwt from '@fastify/jwt';
 import type { FastifyReply, FastifyRequest } from "fastify";
 
 export interface CreateAdminBody{
@@ -26,19 +27,6 @@ export class AdminController{
 
     async authenticate(request: FastifyRequest<{ Body: AuthenticateBody }>, reply: FastifyReply){
         const result = await this.authenticateAdminUseCase.execute(request.body);
-
-        const token = reply.jwtSign(
-            {
-                sub: result.id,
-                role: 'admin',
-                email: result.email
-            },
-            { expiresIn: '7d' }
-        );
-
-        return reply.status(200).send({
-            ...result,
-            token
-        })
+        return reply.status(200).send(result);
     }
 }

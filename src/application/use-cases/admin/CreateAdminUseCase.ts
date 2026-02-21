@@ -1,4 +1,5 @@
 import { Admin } from "@/domain/entities/Admin.js";
+import { InvalidCredentialsError } from "@/domain/errors/AdminErrors.js";
 import type { IAdminRepository } from "@/domain/repositories/IAdminRepository.js";
 import { Email } from "@/domain/value-objects/Email.js";
 import * as bcrypt from 'bcrypt';
@@ -25,7 +26,7 @@ export class CreateAdminUseCase{
 
         const existingAdmin = await this.adminRepository.findByEmail(email);
         if(existingAdmin){
-            throw new Error('Admin with this email already exists');
+            throw new InvalidCredentialsError();
         }
 
         const passwordHash = await bcrypt.hash(input.password, 10);
