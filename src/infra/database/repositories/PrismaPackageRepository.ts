@@ -101,7 +101,7 @@ export class PrismaPackageRepository implements IPackageRepository {
         );
 
         return Package.restore(
-            UUID.generate(),
+            UUID.create(data.id),
             data.recipientName,
             data.recipientPhone,
             address,

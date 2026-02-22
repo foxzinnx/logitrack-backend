@@ -6,9 +6,7 @@ import cors from 'fastify';
 import Fastify from "fastify";
 import { ErrorHandler } from "./presentation/middlewares/ErrorHandler.js";
 import { makeControllers } from "./presentation/factories/makeControllers.js";
-import { packageRoutes } from "./presentation/http/routes/packageRoutes.js";
-import { delivererRoutes } from "./presentation/http/routes/delivererRoutes.js";
-import { adminRoutes } from "./presentation/http/routes/adminRoutes.js";
+import { setupRoutes } from "./presentation/http/routes/index.js";
 
 const prisma = new PrismaClient()
 
@@ -32,13 +30,8 @@ fastify.get('/health', async () => {
     return { status: 'ok', timestamp: new Date().toISOString() };
 });
 
-const { packageController, delivererController ,adminController } = makeControllers(prisma);
-
-fastify.register(async (instance) => {
-    await packageRoutes(instance, packageController);
-    await delivererRoutes(instance, delivererController);
-    await adminRoutes(instance, adminController);
-});
+const controllers = makeControllers(prisma);
+setupRoutes(fastify, controllers);
 
 const start = async () => {
     try {
