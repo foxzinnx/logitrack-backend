@@ -17,3 +17,9 @@ export class DelivererNotActiveError extends DomainError {
         super('Deliverer is not active');
     }
 }
+
+export class DelivererCannotBeOnlineError extends DomainError {
+    constructor(){
+        super('Inactive deliverer cannot go online');
+    }
+}

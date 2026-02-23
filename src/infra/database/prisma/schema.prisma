@@ -44,6 +44,8 @@ model Deliverer {
   name      String
   cpf       String   @unique
   phone     String
+  passwordHash  String
+  status  String  @default("OFFLINE")
   isActive  Boolean
   createdAt DateTime
   updatedAt DateTime

@@ -1,22 +1,10 @@
+import type { CreateDelivererDTO } from "@/application/dtos/CreateDelivererDTO.js";
+import type { DelivererResponseDTO } from "@/application/dtos/DelivererResponseDTO.js";
 import { Deliverer } from "@/domain/entities/Deliverer.js";
 import { DelivererAlreadyExistsError } from "@/domain/errors/DelivererErrors.js";
 import type { IDelivererRepository } from "@/domain/repositories/IDelivererRepository.js";
 import { CPF } from "@/domain/value-objects/CPF.js";
-
-interface CreateDelivererDTO{
-    name: string;
-    cpf: string;
-    phone: string;
-}
-
-interface DelivererResponseDTO{
-    id: string;
-    name: string;
-    cpf: string;
-    phone: string;
-    isActive: boolean;
-    createdAt: Date;
-}
+import * as bcrypt from 'bcrypt';
 
 export class CreateDelivererUseCase{
     constructor(private delivererRepository: IDelivererRepository){}
@@ -30,10 +18,13 @@ export class CreateDelivererUseCase{
             throw new DelivererAlreadyExistsError(cpf.toString());
         }
 
+        const passwordHash = await bcrypt.hash(input.password, 10);
+
         const deliverer = Deliverer.create(
             input.name,
             cpf,
-            input.phone
+            input.phone,
+            passwordHash
         );
 
         await this.delivererRepository.create(deliverer);
@@ -43,6 +34,7 @@ export class CreateDelivererUseCase{
             name: deliverer.getName(),
             cpf: deliverer.getCPF().getFormatted(),
             phone: deliverer.getPhone(),
+            status: deliverer.getStatus(),
             isActive: deliverer.getIsActive(),
             createdAt: deliverer.getCreatedAt()
         }

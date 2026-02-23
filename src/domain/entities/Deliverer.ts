@@ -1,3 +1,4 @@
+import { DelivererCannotBeOnlineError } from "../errors/DelivererErrors.js";
 import type { CPF } from "../value-objects/CPF.js";
 import { UUID } from "../value-objects/UUID.js";
 
@@ -65,7 +66,7 @@ export class Deliverer{
 
     goOnline(): void {
         if (!this.isActive) {
-            throw new Error('Inactive deliverer cannot go online');
+            throw new DelivererCannotBeOnlineError();
         }
         this.status = DelivererStatus.ONLINE;
         this.updatedAt = new Date();
@@ -119,6 +120,14 @@ export class Deliverer{
 
     getIsActive(): boolean {
         return this.isActive;
+    }
+
+    getStatus(): DelivererStatus {
+        return this.status;
+    }
+
+    getPasswordHash(): string {
+        return this.passwordHash;
     }
 
     getCreatedAt(): Date {
