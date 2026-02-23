@@ -15,6 +15,8 @@ import { PackageController } from "../http/controllers/PackageController.js";
 import { DelivererController } from "../http/controllers/DelivererController.js";
 import { AdminController } from "../http/controllers/AdminController.js";
 import { JWTTokenProvider } from "@/infra/providers/JWTTokenProvider.js";
+import { AuthenticateDelivererUseCase } from "@/application/use-cases/deliverer/AuthenticateDelivererUseCase.js";
+import { UpdateDelivererStatusUseCase } from "@/application/use-cases/deliverer/UpdateDelivererStatusUseCase.js";
 
 export function makeControllers(prisma: PrismaClient){
     const packageRepository = new PrismaPackageRepository(prisma);
@@ -34,6 +36,8 @@ export function makeControllers(prisma: PrismaClient){
 
     const createDelivererUseCase = new CreateDelivererUseCase(delivererRepository);
     const listActiveDeliverers = new ListActiveDeliveresUseCase(delivererRepository);
+    const authenticateDelivererUseCase = new AuthenticateDelivererUseCase(delivererRepository, tokenProvider);
+    const updateDelivererStatusUseCase = new UpdateDelivererStatusUseCase(delivererRepository);
 
     const createAdminUseCase = new CreateAdminUseCase(adminRepository);
     const authenticateAdminUseCase = new AuthenticateAdminUseCase(adminRepository, tokenProvider);
@@ -48,7 +52,10 @@ export function makeControllers(prisma: PrismaClient){
 
     const delivererController = new DelivererController(
         createDelivererUseCase,
-        listActiveDeliverers
+        listActiveDeliverers,
+        authenticateDelivererUseCase,
+        updateDelivererStatusUseCase
+
     );
 
     const adminController = new AdminController(

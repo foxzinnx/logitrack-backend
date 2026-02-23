@@ -9,7 +9,7 @@ export interface CreateAdminBody{
     password: string;
 }
 
-export interface AuthenticateBody{
+export interface AuthenticateAdminBody{
     email: string;
     password: string;
 }
@@ -25,7 +25,7 @@ export class AdminController{
         return reply.status(201).send(result);
     }
 
-    async authenticate(request: FastifyRequest<{ Body: AuthenticateBody }>, reply: FastifyReply){
+    async authenticate(request: FastifyRequest<{ Body: AuthenticateAdminBody }>, reply: FastifyReply){
         const result = await this.authenticateAdminUseCase.execute(request.body);
         return reply.status(200).send(result);
     }

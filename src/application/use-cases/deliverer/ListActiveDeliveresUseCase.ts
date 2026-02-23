@@ -19,6 +19,7 @@ export class ListActiveDeliveresUseCase{
             name: deliverer.getName(),
             cpf: deliverer.getCPF().getFormatted(),
             phone: deliverer.getPhone(),
+            status: deliverer.getStatus(),
             isActive: deliverer.getIsActive()
         }))
     }

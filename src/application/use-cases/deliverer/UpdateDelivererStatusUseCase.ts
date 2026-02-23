@@ -3,7 +3,7 @@ import { DelivererNotFoundError } from "@/domain/errors/DelivererErrors.js";
 import type { IDelivererRepository } from "@/domain/repositories/IDelivererRepository.js";
 import { UUID } from "@/domain/value-objects/UUID.js";
 
-export class UpdateDelivererUseCase{
+export class UpdateDelivererStatusUseCase{
     constructor(
         private delivererRepository: IDelivererRepository
     ){}

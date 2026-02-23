@@ -1,4 +1,4 @@
-import { Deliverer } from "@/domain/entities/Deliverer.js";
+import { Deliverer, DelivererStatus } from "@/domain/entities/Deliverer.js";
 import type { IDelivererRepository } from "@/domain/repositories/IDelivererRepository.js";
 import { CPF } from "@/domain/value-objects/CPF.js";
 import { UUID } from "@/domain/value-objects/UUID.js";
@@ -14,6 +14,8 @@ export class PrismaDelivererRepository implements IDelivererRepository {
                 name: deliverer.getName(),
                 cpf: deliverer.getCPF().getValue(),
                 phone: deliverer.getPhone(),
+                passwordHash: deliverer.getPasswordHash(),
+                status: deliverer.getStatus(),
                 isActive: deliverer.getIsActive(),
                 createdAt: deliverer.getCreatedAt(),
                 updatedAt: deliverer.getUpdatedAt()
@@ -82,6 +84,8 @@ export class PrismaDelivererRepository implements IDelivererRepository {
             data.name,
             CPF.create(data.cpf),
             data.phone,
+            data.passwordHash,
+            data.status as DelivererStatus,
             data.isActive,
             data.createdAt,
             data.updatedAt

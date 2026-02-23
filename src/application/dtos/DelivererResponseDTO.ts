@@ -3,7 +3,7 @@ export interface DelivererResponseDTO {
   name: string;
   cpf: string;
   phone: string;
-  status: string; // ✅ NOVO
+  status: string;
   isActive: boolean;
   createdAt: Date;
 }
