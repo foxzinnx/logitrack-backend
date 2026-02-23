@@ -17,7 +17,8 @@ describe('CreateDelivererUseCase', () => {
         const input = {
             name: 'João entregador',
             cpf: '123.456.789-09',
-            phone: '(11) 99999-9999'
+            phone: '(11) 99999-9999',
+            password: '123456ds'
         }
 
         const result = await sut.execute(input);
@@ -33,7 +34,8 @@ describe('CreateDelivererUseCase', () => {
         const input = {
             name: 'João Entregador',
             cpf: '123.456.789-09',
-            phone: '(11) 99999-9999'
+            phone: '(11) 99999-9999',
+            password: '123456ds'
         };
 
         await sut.execute(input);
@@ -45,7 +47,8 @@ describe('CreateDelivererUseCase', () => {
         const input = {
             name: 'João Entregador',
             cpf: '123.456.789-00',
-            phone: '(11) 99999-9999'
+            phone: '(11) 99999-9999',
+            password: '123456ds'
         };
 
         await expect(sut.execute(input)).rejects.toThrow(InvalidCPFError);

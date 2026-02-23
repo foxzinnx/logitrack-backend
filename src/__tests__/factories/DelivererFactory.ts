@@ -7,12 +7,15 @@ export class DelivererFactory {
         name: string;
         cpf: string;
         phone: string;
+        password: string;
     }>): Deliverer {
         const validCPF = overrides?.cpf || '307.677.020-93';
+        const passwordHash = overrides?.password || 'password123';
 
         return Deliverer.create(
             overrides?.name || faker.person.fullName(),
             CPF.create(validCPF),
+            passwordHash,
             overrides?.phone || faker.phone.number()
         )
     }

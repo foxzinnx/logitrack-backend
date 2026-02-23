@@ -1,5 +1,5 @@
 import { Package, PackageStatus } from "@/domain/entities/Package.js";
-import { DeliveryPhotoRequiredError, PackageAlreadyAssignedError, PackageNotAssigned } from "@/domain/errors/PackageErrors.js";
+import { DeliveryPhotoRequiredError, PackageAlreadyAssignedError, PackageNotAssignedError } from "@/domain/errors/PackageErrors.js";
 import { Address } from "@/domain/value-objects/Address.js";
 import { UUID } from "@/domain/value-objects/UUID.js";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -84,7 +84,7 @@ describe('Package Entity', () => {
         it('should throw error when package has no deliverer', () => {
             const pkg = Package.create('João Silva', '(49) 99242-2452', address);
 
-            expect(() => pkg.markAsDelivered('https://example.com/photo')).toThrow(PackageNotAssigned);
+            expect(() => pkg.markAsDelivered('https://example.com/photo')).toThrow(PackageNotAssignedError);
         });
 
         it('should throw error when photo URL is empty', () => {
