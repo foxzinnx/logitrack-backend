@@ -62,6 +62,12 @@ export class PackageController{
         return reply.status(200).send(result);
     }
 
+    async listMyPackages(request: FastifyRequest, reply: FastifyReply){
+        const user = request.user;
+        const result = await this.listPackagesByDelivererUseCase.execute(user.sub);
+        return reply.status(200).send(result);
+    }
+
     async getDetails(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply){
         const result = await this.getPackageDetailsUseCase.execute(request.params.id);
         return reply.status(200).send(result);

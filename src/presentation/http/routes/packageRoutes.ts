@@ -24,6 +24,12 @@ export async function packageRoutes(
         packageController.markAsDelivered.bind(packageController)
     );
 
+    fastify.get(
+        '/packages/me',
+        { preHandler: [delivererOnly] },
+        packageController.listMyPackages.bind(packageController)
+    );
+
     fastify.get<{ Params: { delivererId: string } }>(
         '/packages/deliverer/:delivererId',
         { preHandler: [authMiddleware] },
