@@ -15,7 +15,16 @@ import { swaggerConfig, swaggerUiConfig } from "./presentation/config/swagger.js
 const prisma = new PrismaClient()
 
 const fastify = Fastify({
-    logger: true
+    logger: true,
+    ajv: {
+        customOptions: {
+        removeAdditional: 'all',
+        coerceTypes: true,
+        useDefaults: true,
+        // Permitir keywords adicionais como 'example'
+        strict: false
+        }
+    }
 })
 
 fastify.register(cors, {
