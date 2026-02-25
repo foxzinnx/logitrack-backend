@@ -4,9 +4,13 @@ import multipart from "@fastify/multipart";
 import 'dotenv/config';
 import cors from 'fastify';
 import Fastify from "fastify";
+import swagger from '@fastify/swagger';
+import swaggerUi from '@fastify/swagger-ui';
 import { ErrorHandler } from "./presentation/middlewares/ErrorHandler.js";
 import { makeControllers } from "./presentation/factories/makeControllers.js";
 import { setupRoutes } from "./presentation/http/routes/index.js";
+import fastifyApiReference from '@scalar/fastify-api-reference';
+import { swaggerConfig, swaggerUiConfig } from "./presentation/config/swagger.js";
 
 const prisma = new PrismaClient()
 
@@ -26,9 +30,24 @@ fastify.register(multipart);
 
 fastify.setErrorHandler(ErrorHandler);
 
-fastify.get('/health', async () => {
-    return { status: 'ok', timestamp: new Date().toISOString() };
-});
+fastify.register(swagger as any, swaggerConfig);
+fastify.register(swaggerUi as any, swaggerUiConfig);
+
+fastify.get('/health', {
+  schema: {
+    tags: ['Health'],
+    summary: 'Health check',
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          status: { type: 'string' },
+          timestamp: { type: 'string' }
+        }
+      }
+    }
+  }
+}, async () => ({ status: 'ok', timestamp: new Date().toISOString() }));
 
 const controllers = makeControllers(prisma);
 setupRoutes(fastify, controllers);

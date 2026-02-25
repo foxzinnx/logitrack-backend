@@ -21,8 +21,18 @@ export interface AssignPackageBody{
     delivererId: string;
 }
 
+export interface PackageIdParams {
+    id: string;
+}
+
 export interface MarkAsDeliveredBody {
     photoUrl: string;
+}
+
+interface JWTPayload {
+    sub: string;
+    role: 'admin' | 'deliverer';
+    email?: string;
 }
 
 export class PackageController{
@@ -31,7 +41,7 @@ export class PackageController{
         private assignPackageToDelivererUseCase: AssignPackageToDelivererUseCase,
         private markPackageAsDeliveredUseCase: MarkPackageAsDeliveredUseCase,
         private listPackagesByDelivererUseCase: ListPackagesByDelivererUseCase,
-        private getPackageDetailsUseCase: GetPackageDetailsUseCase
+        private getPackageDetailsUseCase: GetPackageDetailsUseCase,
     ){}
 
     async create(request: FastifyRequest<{ Body: CreatePackageBody }>, reply: FastifyReply){
@@ -39,7 +49,7 @@ export class PackageController{
         return reply.status(201).send(result);
     }
 
-    async assignToDeliverer(request: FastifyRequest<{ Params: { id: string }, Body: AssignPackageBody }>, reply: FastifyReply){
+    async assignToDeliverer(request: FastifyRequest<{ Params: PackageIdParams, Body: AssignPackageBody }>, reply: FastifyReply){
         const result = await this.assignPackageToDelivererUseCase.execute({
             packageId: request.params.id,
             delivererId: request.body.delivererId
@@ -48,7 +58,7 @@ export class PackageController{
         return reply.status(200).send(result);
     }
 
-    async markAsDelivered(request: FastifyRequest<{ Params: { id: string }, Body: MarkAsDeliveredBody}>, reply: FastifyReply){
+    async markAsDelivered(request: FastifyRequest<{ Params: PackageIdParams, Body: MarkAsDeliveredBody}>, reply: FastifyReply){
         const result = await this.markPackageAsDeliveredUseCase.execute({
             packageId: request.params.id,
             photoUrl: request.body.photoUrl
@@ -63,7 +73,7 @@ export class PackageController{
     }
 
     async listMyPackages(request: FastifyRequest, reply: FastifyReply){
-        const user = request.user;
+        const user = request.user as JWTPayload;
         const result = await this.listPackagesByDelivererUseCase.execute(user.sub);
         return reply.status(200).send(result);
     }

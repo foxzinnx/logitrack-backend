@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { PackageController, type AssignPackageBody, type CreatePackageBody, type MarkAsDeliveredBody } from "../controllers/PackageController.js";
+import { PackageController, type AssignPackageBody, type CreatePackageBody, type MarkAsDeliveredBody, type PackageIdParams } from "../controllers/PackageController.js";
 import { adminOnly, authMiddleware, delivererOnly } from "@/presentation/middlewares/AuthMiddleware.js";
 
 export async function packageRoutes(
@@ -12,13 +12,13 @@ export async function packageRoutes(
         packageController.create.bind(packageController)
     );
 
-    fastify.patch<{ Params: { id: string }, Body: AssignPackageBody }>(
+    fastify.patch<{ Params: PackageIdParams, Body: AssignPackageBody }>(
         '/packages/:id/assign',
         { preHandler: [adminOnly] },
         packageController.assignToDeliverer.bind(packageController)
     );
 
-    fastify.patch<{ Params: { id: string }, Body: MarkAsDeliveredBody}>(
+    fastify.patch<{ Params: PackageIdParams, Body: MarkAsDeliveredBody}>(
         '/packages/:id/deliver',
         { preHandler: [delivererOnly] },
         packageController.markAsDelivered.bind(packageController)
@@ -36,7 +36,7 @@ export async function packageRoutes(
         packageController.listByDeliverer.bind(packageController)
     );
 
-    fastify.get<{ Params: { id: string } }>(
+    fastify.get<{ Params: PackageIdParams }>(
         '/packages/:id',
         { preHandler: [authMiddleware] },
         packageController.getDetails.bind(packageController)
