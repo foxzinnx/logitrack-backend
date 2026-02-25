@@ -21,7 +21,6 @@ const fastify = Fastify({
         removeAdditional: 'all',
         coerceTypes: true,
         useDefaults: true,
-        // Permitir keywords adicionais como 'example'
         strict: false
         }
     }
