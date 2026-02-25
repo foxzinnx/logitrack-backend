@@ -2,7 +2,7 @@ import { PackageFactory } from "@/__tests__/factories/PackageFactory.js";
 import { InMemoryPackageRepository } from "@/__tests__/mocks/repositories/InMemoryPackageRepository.js";
 import { MarkPackageAsDeliveredUseCase } from "@/application/use-cases/package/MarkPackageAsDeliveredUseCase.js";
 import { PackageStatus } from "@/domain/entities/Package.js";
-import { DeliveryPhotoRequiredError, PackageNotAssigned, PackageNotFoundError } from "@/domain/errors/PackageErrors.js";
+import { DeliveryPhotoRequiredError, PackageNotAssignedError, PackageNotFoundError } from "@/domain/errors/PackageErrors.js";
 import { UUID } from "@/domain/value-objects/UUID.js";
 import { beforeEach, describe, expect, it } from "vitest";
 
@@ -50,7 +50,7 @@ describe('MarkPackageAsDeliveredUseCase', () => {
         await expect(sut.execute({
             packageId: pkg.getId().getValue(),
             photoUrl: 'https://example.com/photo.png'
-        })).rejects.toThrow(PackageNotAssigned);
+        })).rejects.toThrow(PackageNotAssignedError);
     });
 
     it('should throw error when photo url is empty', async () => {
